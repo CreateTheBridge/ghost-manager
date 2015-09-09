@@ -26,9 +26,11 @@ choose do |menu|
   }
 
   menu.choice('Generate Theme') {
-    ghost_install = ask "Please enter the path to your ghost installation: (default #{Dir.home}/Applications/Ghost) "
-    ghost_install = "#{Dir.home}/Applications/Ghost" if ghost_install.blank?
-    installer = Ghost::Manager::Installer.new ghost_install
-    installer.generate_theme
+    puts ""
+    say "<%= color('Sorry theme generation is not yet supported. We will add support for this option when our Yeoman generator has been released.', :red, :bold) %>"
+    # ghost_install = ask "Please enter the path to your ghost installation: (default #{Dir.home}/Applications/Ghost) "
+    # ghost_install = "#{Dir.home}/Applications/Ghost" if ghost_install.blank?
+    # installer = Ghost::Manager::Installer.new ghost_install
+    # installer.generate_theme
   }
 end

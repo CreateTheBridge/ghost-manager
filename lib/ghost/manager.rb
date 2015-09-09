@@ -50,9 +50,10 @@ module Ghost
 
 
       def generate_theme
+        # say "<%= color('Sorry, this does not quite work yet', :red, :bold) %>"
         # Make sure Yeoman is ready to roll
-        say "<%= color('Installing Yeoman...', :light_blue, :bold) %>"
-        system "npm install -g yo bower grunt-cli gulp"
+        # say "<%= color('Installing Yeoman...', :light_blue, :bold) %>"
+        # system "npm install -g yo bower grunt-cli gulp"
 
 
 
