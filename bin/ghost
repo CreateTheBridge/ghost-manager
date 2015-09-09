@@ -1,0 +1,34 @@
+#!/usr/bin/env ruby
+
+require 'string'
+require 'ghost/manager'
+require 'highline/import'
+
+
+puts ""
+say "<%= color('Welcome to Ghost Manager, created by Create the Bridge', :green, :bold) %>"
+puts ""
+
+choose do |menu|
+  menu.prompt = "What do you want to do? "
+  menu.choice('Install Ghost') {
+    dir = ask "Where would you like to install Ghost? (default #{Dir.home}/Applications/Ghost)"
+    dir = "#{Dir.home}/Applications/Ghost" if dir.blank?
+    installer = Ghost::Manager::Installer.new dir
+    installer.install
+  }
+
+  menu.choice('Update Ghost Install') {
+    ghost_install = ask "Please enter the path to your ghost installation: (default #{Dir.home}/Applications/Ghost) "
+    ghost_install = "#{Dir.home}/Applications/Ghost" if ghost_install.blank?
+    installer = Ghost::Manager::Installer.new ghost_install
+    installer.update_install
+  }
+
+  menu.choice('Generate Theme') {
+    ghost_install = ask "Please enter the path to your ghost installation: (default #{Dir.home}/Applications/Ghost) "
+    ghost_install = "#{Dir.home}/Applications/Ghost" if ghost_install.blank?
+    installer = Ghost::Manager::Installer.new ghost_install
+    installer.generate_theme
+  }
+end
