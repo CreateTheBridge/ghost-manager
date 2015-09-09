@@ -33,6 +33,7 @@ Welcome to Ghost Manager, created by Create the Bridge
 What do you want to do?
 ```
 
+It's important to note that you must have git and npm installed for this gem to function properly.
 
 ## Contributing
 
