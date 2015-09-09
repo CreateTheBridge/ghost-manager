@@ -23,7 +23,7 @@ Or install it yourself as:
 Using Ghost Manager is dead simple. Using the "ghost" command, select from the menu and continue with on-screen instructions.
 
 Console:
-```ruby
+```
 $joshuat ghost
 Welcome to Ghost Manager, created by Create the Bridge
 
