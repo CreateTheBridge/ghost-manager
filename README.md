@@ -1,6 +1,6 @@
 # Ghost Manager
 
-Ghost Manager is a Ruby command line gem created to simply the process of installing, updating, and theming Ghost, a popular blogging platform. https://ghost.org
+Ghost Manager is a Ruby command line gem created to simplify the process of installing, updating, and theming Ghost, a popular blogging platform. https://ghost.org
 
 ## Installation
 
