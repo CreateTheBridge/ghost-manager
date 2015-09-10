@@ -3,34 +3,145 @@
 require 'string'
 require 'ghost/manager'
 require 'highline/import'
+require 'slop'
 
+COMMANDS = {
+  'init' => Proc.new{
+    dir = Dir.pwd
+    dir = File.expand_path(ARGV[1]) if ARGV.length > 1
+    dir = File.join dir, "Ghost"
 
-puts ""
-say "<%= color('Welcome to Ghost Manager, created by Create the Bridge', :green, :bold) %>"
-puts ""
-
-choose do |menu|
-  menu.prompt = "What do you want to do? "
-  menu.choice('Install Ghost') {
-    dir = ask "Where would you like to install Ghost? (default #{Dir.home}/Applications/Ghost)"
-    dir = "#{Dir.home}/Applications/Ghost" if dir.blank?
+    say "<%= color('Installing Ghost at \"#{dir}\"', :bold, :light_blue) %>"
     installer = Ghost::Manager::Installer.new dir
     installer.install
-  }
 
-  menu.choice('Update Ghost Install') {
-    ghost_install = ask "Please enter the path to your ghost installation: (default #{Dir.home}/Applications/Ghost) "
-    ghost_install = "#{Dir.home}/Applications/Ghost" if ghost_install.blank?
-    installer = Ghost::Manager::Installer.new ghost_install
+    Ghost::Manager::GhostFile.create dir
+  },
+
+
+  'install' => Proc.new{
+    ghost_dir = ''
+    ghost_dir = ARGV[1] if ARGV.length > 1
+    ghost_dir = ask "Where do you want to install Ghost? " if ghost_dir.blank?
+
+    installer = Ghost::Manager::Installer.new ghost_dir
+    installer.install
+  },
+
+
+  'update' => Proc.new{
+    ghost_dir = ''
+    ghost_dir = ARGV[1] if ARGV.length > 1
+    @ghost_file = Ghost::Manager::GhostFile.new
+
+    if ghost_dir.blank? and @ghost_file.exists?
+      ghost_dir = @ghost_file.ghost_path
+    else
+      ghost_dir = ask "Where is the ghost installation? "
+    end
+
+    installer = Ghost::Manager::Installer.new ghost_dir
     installer.update_install
+  },
+
+  'theme' => Proc.new{
+    theme_name = nil
+    theme_name = ARGV[1] if ARGV.length > 1
+    theme_name = ask "What do you want the theme to be called? " if theme_name.blank?
+    generator = Ghost::Manager::ThemeGenerator.new
+    generator.generate theme_name
+  },
+
+  'dev' => Proc.new{
+    @ghost_file = Ghost::Manager::GhostFile.new
+    unless @ghost_file.exists?
+      say "<%= color('Unable to find ghostfile', :red, :bold) %>"
+      raise Exception.new "Missing ghostfile"
+    end
+
+    theme_path = File.join Dir.pwd, @ghost_file.ghost_theme
+    remote_theme_path = File.join @ghost_file.ghost_path, "content", "themes", @ghost_file.ghost_theme
+
+    # Open Atom
+    say "<%= color('Starting Github Atom editor', :light_blue, :bold) %>"
+    system "atom #{theme_path}"
+
+    # Start server
+    say "<%= color('Starting development server on port 2368', :light_blue, :bold) %>"
+    system "cd #{theme_path}; gulp server --ghost #{@ghost_file.ghost_path} --path #{remote_theme_path}"
+  },
+
+  'server' => Proc.new{
+    @ghost_file = Ghost::Manager::GhostFile.new
+
+    unless @ghost_file.exists?
+      say "<%= color('Unable to find ghostfile', :red, :bold) %>"
+      raise Exception.new "Missing ghostfile"
+    end
+
+    if @ghost_file.theme_installed?
+      theme_path = File.join Dir.pwd, @ghost_file.ghost_theme
+
+      # Start gulp server
+      system "cd #{theme_path}; gulp server --ghost #{@ghost_file.ghost_path} --path #{File.join @ghost_file.ghost_path, "content", "themes", @ghost_file.ghost_theme}"
+    else
+      # Just start the npm server, no theme installed to check out
+      system "cd #{@ghost_file.ghost_path}; npm start"
+    end
   }
 
-  menu.choice('Generate Theme') {
-    puts ""
-    say "<%= color('Sorry theme generation is not yet supported. We will add support for this option when our Yeoman generator has been released.', :red, :bold) %>"
-    # ghost_install = ask "Please enter the path to your ghost installation: (default #{Dir.home}/Applications/Ghost) "
-    # ghost_install = "#{Dir.home}/Applications/Ghost" if ghost_install.blank?
-    # installer = Ghost::Manager::Installer.new ghost_install
-    # installer.generate_theme
-  }
+}
+
+def handle_no_arguments
+  puts ""
+  say "<%= color('Welcome to Ghost Manager, created by Create the Bridge', :green, :bold) %>"
+  puts ""
+
+  choose do |menu|
+    menu.prompt = "What do you want to do? "
+
+    menu.choice('Create Ghost install') do
+      COMMANDS['install'].call
+    end
+
+    menu.choice('Update Ghost') do
+      COMMANDS['update'].call
+    end
+
+    menu.choice('Create Ghost theme') do
+
+    end
+
+    menu.choice('Run Ghost server') do
+    end
+
+    menu.choice('Install Ghost') {
+      COMMANDS['install'].call
+    }
+
+    menu.choice('Update Ghost Install') {
+      COMMANDS['update'].call
+    }
+
+    menu.choice('Generate Theme') {
+      puts ""
+      say "<%= color('Sorry theme generation is not yet supported. We will add support for this option when our Yeoman generator has been released.', :red, :bold) %>"
+      # ghost_install = ask "Please enter the path to your ghost installation: (default #{Dir.home}/Applications/Ghost) "
+      # ghost_install = "#{Dir.home}/Applications/Ghost" if ghost_install.blank?
+      # installer = Ghost::Manager::Installer.new ghost_install
+      # installer.generate_theme
+    }
+  end
+end
+
+if ARGV.length < 1
+  handle_no_arguments
+else
+  cmd = ARGV[0]
+  if COMMANDS[cmd].nil?
+    say "<%= color('#{cmd} is not valid command.', :red, :bold) %>"
+    handle_no_arguments
+  else
+    COMMANDS[cmd].call
+  end
 end
