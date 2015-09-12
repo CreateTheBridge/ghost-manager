@@ -39,31 +39,43 @@ What do you want to do?
 
 Regular command interface with command line arguments:
 
+Ghost Manager will ask for install directory and theme name if not provided.
+
 Command: ghost init
+
+Description: Initializes a new ghost project in the current directory, while giving you the option to install ghost elsewhere.
+
 Params:
-+ Directory to install Ghost to
-+ Name of the theme
++ (optional) Directory
++ (optional) Theme name
 
 ```
 $ ghost init ~/Applications/Ghost magneto
 ```
 
+Command: ghost install
 
+Description: Installs ghost to the given directory
 
-Using Ghost Manager is dead simple. Using the "ghost" command, select from the menu and continue with on-screen instructions.
+Params:
++ (optional) Directory
 
-Console:
 ```
-$joshuat ghost
-Welcome to Ghost Manager, created by Create the Bridge
-
-1. Install Ghost
-2. Update Ghost Install
-3. Generate Theme
-What do you want to do?
+$ ghost install ~/Applications/Ghost
 ```
 
-It's important to note that you must have git and npm installed for this gem to function properly.
+Command: ghost theme
+
+Description: Creates a new theme in the current directory, requires a ghostfile
+
+Params:
++ (optional) Theme name
+
+```
+$ ghost theme magneto
+```
+
+Command: 
 
 ## Contributing
 
