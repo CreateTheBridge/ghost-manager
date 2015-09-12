@@ -41,8 +41,8 @@ Regular command interface with command line arguments:
 
 Command: ghost init
 Params:
-.1. Directory to install Ghost to
-.2. Name of the theme
+⋅⋅1. Directory to install Ghost to
+⋅⋅2. Name of the theme
 
 ```
 $ ghost init ~/Applications/Ghost magneto
