@@ -19,12 +19,12 @@ Gem::Specification.new do |spec|
   spec.executables   = ["ghost", "console"]
   spec.require_paths = ["lib"]
 
-  spec.add_development_dependency "bundler", "~> 1.10"
-  spec.add_development_dependency "rake", "~> 10.0"
-  spec.add_development_dependency "highline", "~> 1.7.3"
-  spec.add_development_dependency "slop", "~> 4.2.0"
-  spec.add_development_dependency "fssm", "~> 0.2.10"
-  spec.add_development_dependency "erubis", "~> 2.7.0"
-  spec.add_development_dependency "json", "~> 1.8.3"
+  spec.add_development_dependency "bundler", '~> 1.10'
+  spec.add_development_dependency "rake", '~> 10.0'
+  spec.add_development_dependency "highline", ">= 1.7.3"
+  spec.add_development_dependency "slop", '>= 4.2.0'
+  spec.add_development_dependency "fssm", ">= 0.2.10"
+  spec.add_development_dependency "erubis", ">= 2.7.0"
+  spec.add_development_dependency "json", ">= 1.8.3"
   spec.add_development_dependency "rsync", "~> 1.0.9"
 end

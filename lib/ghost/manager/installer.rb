@@ -12,14 +12,22 @@ module Ghost
       end
 
       def install
-        # Make sure directory exists
-        if Dir.exists? install_directory
-          say "<%= color('Directory exists, removing directory and recreating...', :bold, :yellow) %>"
-          system 'rm', '-rf', install_directory
+        # Directory exists and is not empty
+        if Dir.exists? install_directory and Dir.entries(install_directory).select{|x| ![".", ".."].include? x}.any?
+          say "<%= color('Directory already exists and is not empty', :yellow, :bold) %>"
+          result = ask "<%= color('Do you want to replace it? (y/n)') %>"
+
+          if result == "y"
+            system 'rm', '-rf', install_directory
+            system 'mkdir', '-p', install_directory
+          else
+            return
+          end
+        else
+          # Create the directory
+          system 'mkdir', '-p', install_directory
         end
 
-        # Create the directory
-        system 'mkdir', '-p', install_directory
 
         say "<%= color('Cloning latest ghost version', :bold, :light_blue) %>"
         puts ""

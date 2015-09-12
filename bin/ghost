@@ -7,25 +7,34 @@ require 'slop'
 
 COMMANDS = {
   'init' => Proc.new{
-    dir = Dir.pwd
-    dir = File.expand_path(ARGV[1]) if ARGV.length > 1
-    dir = File.join dir, "Ghost"
+    ghost_dir = ''
+    ghost_dir = File.expand_path ARGV[1] if ARGV.length > 1
+    ghost_dir = ask "Where do you want to install Ghost? (Default: #{File.join Dir.pwd, "Ghost"})" if ghost_dir.blank?
+    ghost_dir = File.join(Dir.pwd, "Ghost") if ghost_dir.blank?
 
-    say "<%= color('Installing Ghost at \"#{dir}\"', :bold, :light_blue) %>"
-    installer = Ghost::Manager::Installer.new dir
+    installer = Ghost::Manager::Installer.new ghost_dir
     installer.install
 
-    Ghost::Manager::GhostFile.create dir
+    Ghost::Manager::GhostFile.create ghost_dir
+
+    theme_name = ''
+    theme_name = ARGV[2] if ARGV.length > 2
+    theme_name = ask "What do you want the theme to be called? " if theme_name.blank?
+    generator = Ghost::Manager::ThemeGenerator.new
+    generator.generate theme_name
   },
 
 
   'install' => Proc.new{
     ghost_dir = ''
-    ghost_dir = ARGV[1] if ARGV.length > 1
-    ghost_dir = ask "Where do you want to install Ghost? " if ghost_dir.blank?
+    ghost_dir = File.expand_path ARGV[1] if ARGV.length > 1
+    ghost_dir = ask "Where do you want to install Ghost? (Default: #{File.join Dir.pwd, "Ghost"})" if ghost_dir.blank?
+    ghost_dir = File.join(Dir.pwd, "Ghost") if ghost_dir.blank?
 
     installer = Ghost::Manager::Installer.new ghost_dir
     installer.install
+
+    Ghost::Manager::GhostFile.create ghost_dir
   },
 
 
@@ -45,7 +54,7 @@ COMMANDS = {
   },
 
   'theme' => Proc.new{
-    theme_name = nil
+    theme_name = ''
     theme_name = ARGV[1] if ARGV.length > 1
     theme_name = ask "What do you want the theme to be called? " if theme_name.blank?
     generator = Ghost::Manager::ThemeGenerator.new
@@ -67,8 +76,7 @@ COMMANDS = {
     system "atom #{theme_path}"
 
     # Start server
-    say "<%= color('Starting development server on port 2368', :light_blue, :bold) %>"
-    system "cd #{theme_path}; gulp server --ghost #{@ghost_file.ghost_path} --path #{remote_theme_path}"
+    COMMANDS['server'].call
   },
 
   'server' => Proc.new{
@@ -100,6 +108,10 @@ def handle_no_arguments
   choose do |menu|
     menu.prompt = "What do you want to do? "
 
+    menu.choice('Initialize a new Ghost project') do
+      COMMANDS['init'].call
+    end
+
     menu.choice('Create Ghost install') do
       COMMANDS['install'].call
     end
@@ -109,28 +121,16 @@ def handle_no_arguments
     end
 
     menu.choice('Create Ghost theme') do
-
+      COMMANDS['theme'].call
     end
 
     menu.choice('Run Ghost server') do
+      COMMANDS['server'].call
     end
 
-    menu.choice('Install Ghost') {
-      COMMANDS['install'].call
-    }
-
-    menu.choice('Update Ghost Install') {
-      COMMANDS['update'].call
-    }
-
-    menu.choice('Generate Theme') {
-      puts ""
-      say "<%= color('Sorry theme generation is not yet supported. We will add support for this option when our Yeoman generator has been released.', :red, :bold) %>"
-      # ghost_install = ask "Please enter the path to your ghost installation: (default #{Dir.home}/Applications/Ghost) "
-      # ghost_install = "#{Dir.home}/Applications/Ghost" if ghost_install.blank?
-      # installer = Ghost::Manager::Installer.new ghost_install
-      # installer.generate_theme
-    }
+    menu.choice('Launch dev suite') do
+      COMMANDS['dev'].call
+    end
   end
 end
 
