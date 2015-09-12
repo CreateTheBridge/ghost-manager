@@ -39,7 +39,7 @@ What do you want to do?
 
 Regular command interface with command line arguments:
 
-Ghost Manager will ask for install directory and theme name if not provided.
+_Ghost Manager will ask for install directory and theme name if not provided._
 
 **Command**: ghost init
 
