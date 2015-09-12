@@ -1,24 +1,30 @@
 # Ghost Manager
 
-Ghost Manager is a Ruby command line gem created to simplify the process of installing, updating, and theming Ghost, a popular blogging platform. https://ghost.org
+Ghost Manager is a Ruby command line utility to augment the process of installing Ghost, a popular blogging platform (https://ghost.org), and developing themes.
+
+Ghost Manager utilizes Atom, a smart text editor created by Github (http://atom.io), to edit theme files.
+
+## Dependencies
+
+Ghost Manager requires the user to have NPM (Node Package Manager) installed on their system to execute commands. Learn more at https://www.npmjs.com
+
+Ghost Manager requires the user to have the ghost-interface Yeoman generator installed.  Learn more about ghost-interface on it's github page: https://github.com/CreateTheBridge/generator-ghost-interface
 
 ## Installation
 
-Add this line to your application's Gemfile:
-
-```ruby
-gem 'ghost-manager'
+Install Ghost Manager via https://rubygems.org.
+```
+gem install ghost-manager
 ```
 
-And then execute:
-
-    $ bundle
-
-Or install it yourself as:
-
-    $ gem install ghost-manager
-
 ## Usage
+
+Ghost Manager can be used several ways:
+
+An easy-to-use menu interface which can be accessed by simply entering:
+```
+$ ghost
+
 
 Using Ghost Manager is dead simple. Using the "ghost" command, select from the menu and continue with on-screen instructions.
 
