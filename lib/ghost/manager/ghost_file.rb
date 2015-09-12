@@ -9,10 +9,11 @@ module Ghost
       attr_accessor :path, :content
 
       def self.create dir
-        @ghost_directory = dir
-        @template = File.read "#{Dir.pwd}/lib/ghost/templates/ghostfile.json.erb"
-        erb = ERB.new(@template).result binding
-        File.write File.join(Dir.pwd, "ghostfile.json"), erb
+        content = {
+          "ghost-installation" => dir
+        }
+        json = JSON.pretty_generate content
+        File.write File.join(Dir.pwd, "ghostfile.json"), json
         self.new
       end
 
