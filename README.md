@@ -41,11 +41,11 @@ Regular command interface with command line arguments:
 
 Ghost Manager will ask for install directory and theme name if not provided.
 
-Command: ghost init
+*Command*: ghost init
 
-Description: Initializes a new ghost project in the current directory, while giving you the option to install ghost elsewhere.
+*Description*: Initializes a new ghost project in the current directory, while giving you the option to install ghost elsewhere.
 
-Params:
+*Params*:
 + (optional) Directory
 + (optional) Theme name
 
@@ -53,29 +53,43 @@ Params:
 $ ghost init ~/Applications/Ghost magneto
 ```
 
-Command: ghost install
+*Command*: ghost install
 
-Description: Installs ghost to the given directory
+*Description*: Installs ghost to the given directory
 
-Params:
+*Params*:
 + (optional) Directory
 
 ```
 $ ghost install ~/Applications/Ghost
 ```
 
-Command: ghost theme
+*Command*: ghost theme
 
-Description: Creates a new theme in the current directory, requires a ghostfile
+*Description*: Creates a new theme in the current directory, requires a ghostfile
 
-Params:
+*Params*:
 + (optional) Theme name
 
 ```
 $ ghost theme magneto
 ```
 
-Command: 
+*Command*: ghost dev
+
+*Description*: After ghost has been installed and a theme created, this will launch the ghost server and an instance of Atom to start developing your them. Requires a ghostfile
+
+```
+$ ghost dev
+```
+
+*Command*: ghost server
+
+*Description*: After Ghost has been installed, this will launch the ghost server. Requires a ghostfile
+
+```
+$ ghost server
+```
 
 ## Contributing
 
