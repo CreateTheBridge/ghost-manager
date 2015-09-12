@@ -25,6 +25,30 @@ An easy-to-use menu interface which can be accessed by simply entering:
 ```
 $ ghost
 
+Welcome to Ghost Manager, created by Create the Bridge
+
+1. Initialize a new Ghost project
+2. Create Ghost install
+3. Update Ghost
+4. Create Ghost theme
+5. Run Ghost server
+6. Launch dev suite
+What do you want to do?
+
+```
+
+Regular command interface with command line arguments:
+
+Command: ghost init
+Params:
+.1. Directory to install Ghost to
+.2. Name of the theme
+
+```
+$ ghost init ~/Applications/Ghost magneto
+```
+
+
 
 Using Ghost Manager is dead simple. Using the "ghost" command, select from the menu and continue with on-screen instructions.
 
