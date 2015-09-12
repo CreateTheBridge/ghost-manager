@@ -3,7 +3,6 @@
 require 'string'
 require 'ghost/manager'
 require 'highline/import'
-require 'slop'
 
 COMMANDS = {
   'init' => Proc.new{
