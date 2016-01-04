@@ -1,3 +1,5 @@
+# DEPRECATION NOTICE: This has been deprecated, don't try to use it.  You'll just end up frustrated 
+
 # Ghost Manager
 
 Ghost Manager is a Ruby command line utility to augment the process of installing Ghost, a popular blogging platform (https://ghost.org), and developing themes.
